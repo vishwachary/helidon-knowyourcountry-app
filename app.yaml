@@ -1,0 +1,37 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: helidon-knowyourcountry-app
+  labels:
+    app: helidon-knowyourcountry-app
+spec:
+  type: ClusterIP
+  selector:
+    app: helidon-knowyourcountry-app
+  ports:
+    - name: tcp
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: helidon-knowyourcountry-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: helidon-knowyourcountry-app
+  template:
+    metadata:
+      labels:
+        app: helidon-knowyourcountry-app
+        version: v1
+    spec:
+      containers:
+      - name: helidon-knowyourcountry-app
+        image: helidon-knowyourcountry-app
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
